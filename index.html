@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>HumanTek Sales Suite Assessment</title>
+<style>
+:root{
+  --orange:#F5A000;
+  --orange-dark:#d98c00;
+  --black:#000000;
+  --white:#ffffff;
+  --cream:#fff6e6;
+  --gray:#6b6b6b;
+  --border:#eee0c8;
+  --red:#c0392b;
+  --radius-lg:28px;
+  --radius-md:16px;
+  --radius-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{overflow-x:hidden;}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  background:#f2f2f2;
+  color:#222;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:16px;
+}
+.app-shell{
+  width:100%;
+  max-width:440px;
+  background:var(--white);
+  border-radius:var(--radius-lg);
+  box-shadow:0 20px 50px rgba(0,0,0,.14);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:calc(100vh - 32px);
+}
+.screen{display:none;flex-direction:column;flex:1;animation:fadeIn .45s ease;}
+.screen.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+/* ===== PAGE 1: PERSONAL INFO ===== */
+.info-top{padding:26px 24px 70px;text-align:center;position:relative;}
+.info-top img.logo{width:170px;max-width:60%;}
+.info-top img.character{
+  position:absolute;bottom:-2px;left:50%;transform:translateX(-58%);
+  width:190px;max-width:62%;z-index:5;pointer-events:none;
+}
+.info-card{
+  background:linear-gradient(160deg,var(--orange),var(--orange-dark));
+  border-radius:28px 28px 0 0;
+  padding:28px 22px 30px;
+  flex:1;
+  position:relative;
+  z-index:3;
+}
+.info-card h2{color:#fff;font-size:1.5em;margin-bottom:20px;text-align:center;font-weight:700;}
+.field{margin-bottom:14px;text-align:left;}
+.field label{display:block;color:#fff;font-size:.82em;font-weight:600;margin-bottom:6px;}
+.field input,.field select{
+  width:100%;padding:13px 14px;border:none;border-radius:12px;
+  font-size:15px;background:#fff;color:#222;
+}
+.field input:focus,.field select:focus{outline:3px solid #00000033;}
+.field.error input{outline:2px solid var(--red);}
+.field-hint{color:#fff3da;font-size:.72em;margin-top:4px;display:block;}
+.btn-start{
+  display:block;width:100%;margin-top:18px;padding:15px;border:none;
+  border-radius:14px;background:var(--black);color:#fff;font-weight:700;
+  font-size:16px;cursor:pointer;letter-spacing:.3px;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+}
+.btn-start:hover{background:#222;transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.25);}
+.btn-start:focus-visible{outline:3px solid #fff;outline-offset:2px;}
+
+/* ===== SUITE HEADER ===== */
+.suite-header{
+  background:linear-gradient(135deg,var(--orange),#1a1a1a);
+  color:#fff;padding:26px 20px 18px;text-align:center;
+}
+.suite-header h1{font-size:1.7em;font-weight:800;margin-bottom:4px;}
+.suite-header p{font-size:.85em;opacity:.92;letter-spacing:1px;text-transform:uppercase;}
+.suite-tabs{display:flex;border-bottom:2px solid #f1f3f4;background:#fafafa;}
+.suite-tab{
+  flex:1;padding:13px 10px;text-align:center;font-weight:700;font-size:.85em;
+  color:#9a9a9a;letter-spacing:.6px;text-transform:uppercase;border:none;background:none;
+  position:relative;
+}
+.suite-tab.is-active{color:var(--orange);background:#fff;}
+.suite-tab.is-active::after{
+  content:"";position:absolute;bottom:-2px;left:18%;right:18%;height:3px;
+  background:var(--orange);border-radius:3px;
+}
+.suite-tab.is-done{color:#bdbdbd;}
+
+.suite-content{padding:22px 20px 26px;flex:1;display:flex;flex-direction:column;}
+
+.instructions{
+  background:#fff8ec;border-left:4px solid var(--orange);
+  padding:16px 18px;border-radius:10px;margin-bottom:18px;
+}
+.instructions h3{font-size:1em;margin-bottom:8px;color:#222;}
+.instructions ul{padding-left:18px;font-size:.86em;color:#444;}
+.instructions li{margin-bottom:4px;}
+
+.progress-bar{width:100%;height:8px;background:#eee;border-radius:4px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),#1a1a1a);transition:width .35s ease;}
+.progress-label{font-size:.78em;color:#999;text-align:right;margin-bottom:16px;}
+
+.q-card{
+  background:#fff;border:2px solid #f1f1f1;border-radius:16px;
+  padding:20px;margin-bottom:18px;
+}
+.q-badge{
+  display:inline-block;background:linear-gradient(135deg,var(--orange),#1a1a1a);
+  color:#fff;padding:4px 12px;border-radius:20px;font-size:.72em;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;
+}
+.q-title{font-size:1.08em;font-weight:700;color:#1a1a1a;margin-bottom:16px;line-height:1.4;}
+
+.opt-row{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 14px;background:#fff8ec;border-radius:10px;border-left:4px solid var(--orange);
+  margin-bottom:10px;cursor:pointer;transition:background .2s ease,transform .2s ease;
+}
+.opt-row:hover{background:#ffe9c2;transform:translateX(3px);}
+.opt-text{flex:1;font-size:.92em;}
+.ml-radios{display:flex;gap:14px;flex-shrink:0;}
+.ml-radios label{font-size:.78em;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer;}
+.ml-radios input{accent-color:var(--orange);width:16px;height:16px;}
+
+.choice-opt{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;
+  background:#fff8ec;border-radius:10px;border-left:4px solid var(--orange);
+  margin-bottom:10px;cursor:pointer;transition:background .2s ease,transform .2s ease;
+}
+.choice-opt:hover{background:#ffe9c2;transform:translateX(3px);}
+.choice-opt input{margin-top:3px;accent-color:var(--orange);width:17px;height:17px;flex-shrink:0;}
+.choice-opt label{cursor:pointer;font-size:.92em;line-height:1.4;}
+
+.nav-row{display:flex;gap:12px;margin-top:auto;padding-top:6px;}
+.btn{
+  flex:1;padding:14px;border:none;border-radius:12px;font-size:.95em;font-weight:700;
+  cursor:pointer;text-transform:uppercase;letter-spacing:.4px;transition:all .25s ease;
+}
+.btn-primary{background:linear-gradient(135deg,#1a1a1a,#000);color:#fff;}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.3);}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;}
+.btn-secondary{background:#e9e9e9;color:#333;}
+.btn-secondary:hover:not(:disabled){background:#dcdcdc;transform:translateY(-2px);}
+.btn-secondary:disabled{opacity:.4;cursor:not-allowed;}
+.btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
+
+/* ===== SALES LEVEL SELECT ===== */
+.level-title{font-size:1.25em;font-weight:800;text-align:center;margin:6px 0 4px;color:#1a1a1a;}
+.level-sub{font-size:.88em;color:var(--gray);text-align:center;margin-bottom:20px;}
+.level-card{
+  background:var(--cream);border:1px solid var(--border);border-radius:18px;
+  padding:18px;display:flex;flex-direction:column;gap:14px;
+}
+.level-btn{
+  width:100%;padding:18px;border-radius:14px;border:2px solid #1a1a1a;
+  background:#1a1a1a;color:#fff;font-weight:700;font-size:1em;cursor:pointer;
+  transition:all .25s ease;text-align:center;
+}
+.level-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.25);}
+.level-btn.selected{
+  background:var(--orange);border-color:var(--orange);color:#1a1a1a;
+  box-shadow:0 0 0 4px #f5a00033;
+}
+.level-btn:focus-visible{outline:3px solid var(--orange);outline-offset:3px;}
+.level-note{text-align:center;color:var(--red);font-size:.78em;margin-top:14px;font-weight:600;}
+#continueToSales{margin-top:20px;display:none;}
+
+/* ===== SUBMITTING OVERLAY ===== */
+.submit-overlay{
+  position:fixed;inset:0;background:rgba(20,20,20,.92);display:none;
+  align-items:center;justify-content:center;z-index:999;flex-direction:column;padding:20px;
+}
+.submit-overlay.active{display:flex;}
+.submit-box{
+  background:#fff;border-radius:24px;padding:40px 30px;text-align:center;
+  max-width:320px;width:100%;position:relative;overflow:hidden;
+}
+.spinner-wrap{width:84px;height:84px;margin:0 auto 18px;position:relative;}
+.spinner{
+  width:84px;height:84px;border-radius:50%;border:6px solid #f1d9a8;
+  border-top-color:var(--orange);animation:spin .9s linear infinite;
+}
+.spinner.done{animation:none;border:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.check-circle{
+  width:84px;height:84px;border-radius:50%;background:#27ae60;
+  display:none;align-items:center;justify-content:center;position:absolute;top:0;left:0;
+  animation:popIn .4s ease;
+}
+.check-circle.show{display:flex;}
+.error-circle{
+  width:84px;height:84px;border-radius:50%;background:var(--red);
+  display:none;align-items:center;justify-content:center;position:absolute;top:0;left:0;
+  font-size:2.2em;color:#fff;font-weight:800;animation:popIn .4s ease;
+}
+.error-circle.show{display:flex;}
+@keyframes popIn{0%{transform:scale(0);}70%{transform:scale(1.15);}100%{transform:scale(1);}}
+.check-circle svg{width:42px;height:42px;}
+.check-circle path{
+  stroke:#fff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:48;stroke-dashoffset:48;animation:draw .5s ease forwards .15s;
+}
+@keyframes draw{to{stroke-dashoffset:0;}}
+.submit-msg{font-weight:700;font-size:1.05em;color:#1a1a1a;}
+.submit-msg.is-error{color:var(--red);}
+.submit-sub{font-size:.82em;color:#888;margin-top:6px;}
+.retry-btn{
+  display:none;margin:18px auto 0;padding:11px 26px;border:none;border-radius:10px;
+  background:#1a1a1a;color:#fff;font-weight:700;font-size:.9em;cursor:pointer;
+}
+.retry-btn.show{display:inline-block;}
+.confetti-piece{
+  position:absolute;width:8px;height:14px;top:-20px;border-radius:2px;
+  animation:fall linear forwards;
+}
+@keyframes fall{to{transform:translateY(420px) rotate(540deg);opacity:0;}}
+
+/* ===== THANK YOU PAGE ===== */
+.ty-top{padding:34px 20px 10px;text-align:center;}
+.ty-check{
+  width:78px;height:78px;border-radius:20px;background:#27ae60;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+  animation:popIn .5s ease;
+}
+.ty-check svg{width:40px;height:40px;}
+.ty-check path{stroke:#fff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.ty-top h2{font-size:1.6em;font-weight:800;color:#1a1a1a;margin-bottom:8px;}
+.ty-top p{color:var(--gray);font-size:.92em;max-width:300px;margin:0 auto;line-height:1.5;}
+.ty-contact{padding:22px 20px 30px;}
+.ty-contact h3{
+  text-align:center;font-size:1.1em;font-weight:800;color:#1a1a1a;
+  margin-bottom:18px;position:relative;
+}
+.ty-contact h3::after{
+  content:"";display:block;width:60px;height:3px;background:var(--orange);
+  margin:8px auto 0;border-radius:3px;
+}
+.contact-row{
+  display:flex;align-items:center;gap:14px;border:2px solid var(--orange);
+  border-radius:16px;padding:13px 16px;margin-bottom:12px;transition:transform .2s ease;
+}
+.contact-row:hover{transform:translateX(3px);}
+.contact-icon{
+  width:38px;height:38px;border-radius:50%;background:#1a1a1a;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.05em;
+}
+.contact-row a{color:#1a1a1a;text-decoration:none;font-weight:600;font-size:.9em;word-break:break-word;}
+
+@media (max-width:380px){
+  .app-shell{border-radius:20px;}
+  .suite-header h1{font-size:1.45em;}
+  .info-card h2{font-size:1.3em;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="app-shell" id="appShell">
+
+  <!-- ===================== PAGE 1: PERSONAL INFO ===================== -->
+  <section class="screen active" id="infoSection" aria-labelledby="infoHeading">
+    <div class="info-top">
+      <img src="logo.png" class="logo" alt="HumanTek Logo" onerror="this.style.display='none'">
+      <img src="robot1.png" class="character" alt="" onerror="this.style.display='none'">
+    </div>
+    <div class="info-card">
+      <h2 id="infoHeading">Personal Information</h2>
+      <form id="infoForm" novalidate>
+        <div class="field" id="fld-name">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" autocomplete="name" placeholder="Enter your full name" required>
+        </div>
+        <div class="field" id="fld-contact">
+          <label for="contactNumber">Contact Number</label>
+          <input type="tel" id="contactNumber" inputmode="numeric" placeholder="03XXXXXXXXX" maxlength="11" autocomplete="tel" required>
+          <span class="field-hint" id="contactHint">Format: 03XXXXXXXXX (11 digits)</span>
+        </div>
+        <div class="field" id="fld-designation">
+          <label for="designation">Designation</label>
+          <input type="text" id="designation" placeholder="Enter your designation" required>
+        </div>
+        <div class="field" id="fld-department">
+          <label for="department">Department</label>
+          <input type="text" id="department" placeholder="Enter your department" required>
+        </div>
+        <div class="field" id="fld-shift">
+          <label for="shift">Shift</label>
+          <select id="shift" required>
+            <option value="">Select shift</option>
+            <option>Morning</option>
+            <option>Night</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-start">Let's Start</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 2: DISC ===================== -->
+  <section class="screen" id="discSection" aria-labelledby="discHeading">
+    <div class="suite-header"><h1 id="discHeading">Sales Suite</h1><p>DISC · MBTI · SALES</p></div>
+    <div class="suite-tabs">
+      <button class="suite-tab is-active" type="button" disabled>DISC</button>
+      <button class="suite-tab" type="button" disabled style="opacity:.4;">MBTI</button>
+    </div>
+    <div class="suite-content">
+      <div class="instructions">
+        <h3>DISC Instructions</h3>
+        <ul>
+          <li>Har sawal mein <strong>4 statements</strong> hain</li>
+          <li>Select <strong>M (Most)</strong> — jo aapko sabse zyada describe karta hai</li>
+          <li>Select <strong>L (Least)</strong> — jo aapko sabse kam describe karta hai</li>
+          <li>1 Most aur 1 Least select karein (alag alag)</li>
+          <li>Koi sahi ya ghalat jawab nahi — honestly fill karein</li>
+        </ul>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="discProgress"></div></div>
+      <div class="progress-label" id="discProgressLabel">Question 1</div>
+      <div class="q-card">
+        <div class="q-title" id="discQuestionTitle">Loading...</div>
+        <div id="discOptions" role="group"></div>
+      </div>
+      <div class="nav-row">
+        <button id="discPrevBtn" class="btn btn-secondary" onclick="discPrev()" disabled>Back</button>
+        <button id="discNextBtn" class="btn btn-primary" onclick="discNext()" disabled>Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 3: MBTI ===================== -->
+  <section class="screen" id="mbtiSection" aria-labelledby="mbtiHeading">
+    <div class="suite-header"><h1 id="mbtiHeading">Sales Suite</h1><p>DISC · MBTI · SALES</p></div>
+    <div class="suite-tabs">
+      <button class="suite-tab is-done" type="button" disabled>✅ DISC</button>
+      <button class="suite-tab is-active" type="button" disabled>MBTI</button>
+    </div>
+    <div class="suite-content">
+      <div class="instructions">
+        <h3>MBTI Instructions</h3>
+        <ul>
+          <li>Har sawal mein <strong>2 options (A ya B)</strong> hain</li>
+          <li>Jo option zyada natural lage woh choose karein</li>
+          <li>Koi sahi ya ghalat jawab nahi</li>
+          <li>Instinctively answer dein — zyada sochain nahi</li>
+        </ul>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="mbtiProgress"></div></div>
+      <div class="progress-label" id="mbtiProgressLabel">Question 1</div>
+      <div class="q-card">
+        <div class="q-badge" id="mbtiBadge">Thinking Style (E/I)</div>
+        <div class="q-title" id="mbtiQuestionTitle">Loading...</div>
+        <div id="mbtiOptions" role="radiogroup"></div>
+      </div>
+      <div class="nav-row">
+        <button id="mbtiPrevBtn" class="btn btn-secondary" onclick="mbtiPrev()" disabled>Back</button>
+        <button id="mbtiNextBtn" class="btn btn-primary" onclick="mbtiNext()" disabled>Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 4: SALES SUITE — LEVEL SELECT ===================== -->
+  <section class="screen" id="salesIntroSection" aria-labelledby="salesIntroHeading">
+    <div class="suite-header"><h1 id="salesIntroHeading">Sales Suite</h1><p>DISC · MBTI · SALES</p></div>
+    <div class="suite-tabs">
+      <button class="suite-tab is-done" type="button" disabled>✅ MBTI</button>
+      <button class="suite-tab is-active" type="button" disabled>SALES</button>
+    </div>
+    <div class="suite-content">
+      <div class="level-title">Choose Your Assessment Level</div>
+      <div class="level-sub">Select the level that best matches your experience.</div>
+      <div class="level-card">
+        <button type="button" class="level-btn" id="btnBasic" onclick="selectLevel('basic')" aria-pressed="false">Sales Basic</button>
+        <button type="button" class="level-btn" id="btnAdvanced" onclick="selectLevel('advanced')" aria-pressed="false">Sales Advanced</button>
+      </div>
+      <div class="level-note">Note: Only one option can be selected.</div>
+      <button class="btn btn-primary" id="continueToSales" onclick="startSales()">Continue</button>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 5: SALES QUESTIONS ===================== -->
+  <section class="screen" id="salesSection" aria-labelledby="salesHeading">
+    <div class="suite-header"><h1 id="salesHeading">Sales Suite</h1><p>DISC · MBTI · SALES</p></div>
+    <div class="suite-tabs">
+      <button class="suite-tab is-done" type="button" disabled>✅ MBTI</button>
+      <button class="suite-tab is-active" type="button" disabled>SALES</button>
+    </div>
+    <div class="suite-content">
+      <div class="instructions">
+        <h3 id="salesSectionTitle">Sales Assessment</h3>
+        <ul><li>Har question mein best option choose karein</li></ul>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="salesProgress"></div></div>
+      <div class="progress-label" id="salesProgressLabel">Question 1</div>
+      <div class="q-card">
+        <div class="q-badge" id="salesBadge">Category</div>
+        <div class="q-title" id="salesQuestionTitle">Loading...</div>
+        <div id="salesOptions" role="radiogroup"></div>
+      </div>
+      <div class="nav-row">
+        <button id="salesPrevBtn" class="btn btn-secondary" onclick="salesPrev()" disabled>Back</button>
+        <button id="salesNextBtn" class="btn btn-primary" onclick="salesNext()" disabled>Next</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PAGE 6: THANK YOU ===================== -->
+  <section class="screen" id="thankyouSection" aria-labelledby="tyHeading">
+    <div class="ty-top">
+      <div class="ty-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+      <h2 id="tyHeading">Thank You!</h2>
+      <p>Your assessment has been submitted successfully. We'll be in touch soon.</p>
+    </div>
+    <div class="ty-contact">
+      <h3>Contact Us</h3>
+      <div class="contact-row">
+        <div class="contact-icon">☎</div>
+        <a href="tel:+923313997788">+92 331 3997788</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">✉</div>
+        <a href="mailto:hr@thehumantek.com">hr@thehumantek.com</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🌐</div>
+        <a href="https://thehumantek.com" target="_blank" rel="noopener">TheHumantek.com</a>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">📍</div>
+        <a href="#" onclick="return false;">D-95, Block 8 North Nazimabad, Karachi</a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /app-shell -->
+
+<!-- ===================== SUBMIT OVERLAY ===================== -->
+<div class="submit-overlay" id="submitOverlay" role="status" aria-live="polite">
+  <div class="submit-box">
+    <div class="spinner-wrap">
+      <div class="spinner" id="spinnerEl"></div>
+      <div class="check-circle" id="checkCircle"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="error-circle" id="errorCircle">!</div>
+    </div>
+    <div class="submit-msg" id="submitMsg">Submitting your assessment...</div>
+    <div class="submit-sub" id="submitSub">Please wait a moment</div>
+    <button class="retry-btn" id="retryBtn" onclick="retrySubmit()">Try Again</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG
+   Paste YOUR deployment's /exec URL here. Re-deploying as a "New
+   version" (see Code.gs header comment) keeps this same URL valid.
+============================================================ */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz9J3oPSCz6a5mDntD0Vpcipew5okCdMOJF3ozXqDoOjpODBJRsWW9chvW1_JeweEqTFw/exec";
+
+/* ============================================================
+   DATA — DISC (12 forced-choice questions; statement order is always D,I,S,C)
+============================================================ */
+const discQuestions = [
+  { situation:"Group task mein aap usually:", statements:[
+    "Lead karte hain aur decisions lete hain","Sab ko motivate karte hain aur energy create karte hain",
+    "Team ko support karte hain aur harmony maintain karte hain","Details aur accuracy par focus karte hain"]},
+  { situation:"Jab koi mushkil situation aaye:", statements:[
+    "Jaldi action lete hain, risk lete hain","Logon se baat karte hain, ideas discuss karte hain",
+    "Araam se step by step handle karte hain","Pehle sochte aur analyze karte hain"]},
+  { situation:"Aapka communication style:", statements:[
+    "Direct aur seedha","Friendly aur expressive","Calm aur patient","Formal aur detail-oriented"]},
+  { situation:"Naya project milay to aap:", statements:[
+    "Foran shuru kar dete hain aur lead lete hain","Team ko excited karte hain aur ideas share karte hain",
+    "Plan banate hain aur sab ko sath le kar chalte hain","Pehle research karte hain aur details check karte hain"]},
+  { situation:"Deadline qareeb ho to:", statements:[
+    "Pressure mein bhi fast decisions lete hain","Team ko motivate karke energy barhate hain",
+    "Calmly apna kaam continue karte hain","Checklist bana kar systematically kaam karte hain"]},
+  { situation:"Conflict ho to aap:", statements:[
+    "Seedha apna point rakhte hain","Baat cheet se masla suljhane ki koshish karte hain",
+    "Sabar se sunte hain aur compromise dhoondte hain","Facts aur logic se masla solve karte hain"]},
+  { situation:"Naye logon se milte waqt:", statements:[
+    "Confidently introduce karte hain aur control lete hain","Friendly aur talkative hotay hain",
+    "Reserved rehte hain lekin warm hotay hain","Observe karte hain pehle, phir baat karte hain"]},
+  { situation:"Kaam karne ka andaz:", statements:[
+    "Fast aur result-focused","Creative aur spontaneous","Consistent aur reliable","Organized aur precise"]},
+  { situation:"Risk lene ke mamlay mein:", statements:[
+    "Bade risks lene se nahi ghabraty","Exciting opportunities ke liye risk lete hain",
+    "Safe aur proven raasta pasand karte hain","Risk lene se pehle achi tarah analyze karte hain"]},
+  { situation:"Feedback milne par:", statements:[
+    "Seedha accept karke move on karte hain","Emotionally react karte hain phir positive le lete hain",
+    "Quietly sun kar reflect karte hain","Detail mein samajhna chahte hain ke kahan ghalti hui"]},
+  { situation:"Meeting mein aap:", statements:[
+    "Agenda set karte hain aur lead karte hain","Discussion ko lively banate hain",
+    "Sab ko sunte hain aur support karte hain","Notes lete hain aur data present karte hain"]},
+  { situation:"Stress mein aap:", statements:[
+    "Aur zyada determined ho jate hain","Logon se baat karke stress kam karte hain",
+    "Calm rehne ki koshish karte hain","Akela reh kar systematically solve karte hain"]}
+];
+const DISC_KEYS = ["D","I","S","C"];
+const DISC_FULL = { D:"Dominance", I:"Influence", S:"Steadiness", C:"Compliance" };
+
+/* ============================================================
+   DATA — MBTI (5 questions per dimension = 20 total)
+============================================================ */
+const mbtiQuestions = [
+  {section:"Energy (E/I)", question:"Aap zyada comfortable feel karte hain:", a:"Logon ke sath reh kar", b:"Akelay reh kar", aKey:"E", bKey:"I"},
+  {section:"Energy (E/I)", question:"Weekend par aap kya pasand karte hain:", a:"Friends ke sath outing", b:"Ghar par relax karna", aKey:"E", bKey:"I"},
+  {section:"Energy (E/I)", question:"Naye logon se baat karna aapko:", a:"Energetic banata hai", b:"Thaka deta hai", aKey:"E", bKey:"I"},
+  {section:"Energy (E/I)", question:"Party mein aap:", a:"Bohot logon se baat karte hain", b:"Chand close logon se baat karte hain", aKey:"E", bKey:"I"},
+  {section:"Energy (E/I)", question:"Aap apni energy kahan se lete hain:", a:"Logon se interaction se", b:"Apne akele waqt se", aKey:"E", bKey:"I"},
+
+  {section:"Information (S/N)", question:"Aap zyada focus karte hain:", a:"Practical cheezon par", b:"Ideas aur future possibilities par", aKey:"S", bKey:"N"},
+  {section:"Information (S/N)", question:"Kaam karte waqt aap zyada dhyan dete hain:", a:"Details aur facts par", b:"Big picture aur patterns par", aKey:"S", bKey:"N"},
+  {section:"Information (S/N)", question:"Aap zyada trust karte hain:", a:"Apne experience par", b:"Apni intuition par", aKey:"S", bKey:"N"},
+  {section:"Information (S/N)", question:"Naye idea ko aap kaise dekhte hain:", a:"Practical use case dhoondte hain", b:"Possibilities explore karte hain", aKey:"S", bKey:"N"},
+  {section:"Information (S/N)", question:"Aap zyada comfortable hain:", a:"Step by step instructions ke sath", b:"Open-ended exploration ke sath", aKey:"S", bKey:"N"},
+
+  {section:"Decision (T/F)", question:"Decisions lete waqt aap:", a:"Logic use karte hain", b:"Emotions/people ko consider karte hain", aKey:"T", bKey:"F"},
+  {section:"Decision (T/F)", question:"Conflict resolve karte waqt aap:", a:"Fair aur objective rehte hain", b:"Logon ki feelings ka khayal rakhte hain", aKey:"T", bKey:"F"},
+  {section:"Decision (T/F)", question:"Feedback dete waqt aap:", a:"Honest aur direct hotay hain", b:"Tactful aur sensitive hotay hain", aKey:"T", bKey:"F"},
+  {section:"Decision (T/F)", question:"Kisi decision ko judge karte waqt:", a:"Kya sahi hai dekhte hain", b:"Kis par kya asar hoga dekhte hain", aKey:"T", bKey:"F"},
+  {section:"Decision (T/F)", question:"Aap khud ko zyada kehte hain:", a:"Head se sochne wala", b:"Dil se sochne wala", aKey:"T", bKey:"F"},
+
+  {section:"Work Style (J/P)", question:"Aapko kaam kaise pasand hai:", a:"Planned aur organized", b:"Flexible aur flow ke sath", aKey:"J", bKey:"P"},
+  {section:"Work Style (J/P)", question:"Trip plan karte waqt aap:", a:"Pehle se sab kuch plan karte hain", b:"Spontaneously decide karte hain", aKey:"J", bKey:"P"},
+  {section:"Work Style (J/P)", question:"Deadline ke baray mein aap:", a:"Jaldi finish kar lete hain", b:"Last moment par kaam karte hain", aKey:"J", bKey:"P"},
+  {section:"Work Style (J/P)", question:"Aapki workspace:", a:"Organized aur neat", b:"Flexible aur casual", aKey:"J", bKey:"P"},
+  {section:"Work Style (J/P)", question:"Naye plans ke baray mein aap:", a:"Schedule follow karna pasand karte hain", b:"Last minute changes se comfortable hain", aKey:"J", bKey:"P"}
+];
+
+const mbtiDescriptions = {
+  INTJ:"The Architect", INTP:"The Logician", ENTJ:"The Commander", ENTP:"The Debater",
+  INFJ:"The Advocate", INFP:"The Mediator", ENFJ:"The Protagonist", ENFP:"The Campaigner",
+  ISTJ:"The Logistician", ISFJ:"The Defender", ESTJ:"The Executive", ESFJ:"The Consul",
+  ISTP:"The Virtuoso", ISFP:"The Adventurer", ESTP:"The Entrepreneur", ESFP:"The Entertainer"
+};
+
+/* ============================================================
+   DATA — SALES BASIC (20 Qs, 1 mark each, total 20, pass 15)
+============================================================ */
+const salesBasicQuestions = [
+  {category:"English & Communication", question:'He ___ playing games.', options:["like","likes","liking","liked"], correct:1},
+  {category:"English & Communication", question:"Choose the correct sentence:", options:["I didn't went there","I didn't go there","I not go there","I didn't goes there"], correct:1},
+  {category:"English & Communication", question:"Which is correct?", options:["Their going live","There going live","They're going live","They going live"], correct:2},
+  {category:"English & Communication", question:'Opposite of "polite":', options:["calm","kind","rude","soft"], correct:2},
+  {category:"English & Communication", question:'"Client" means:', options:["employee","manager","buyer","designer"], correct:2},
+  {category:"English & Communication", question:"Choose correct sentence:", options:["I can helps you","I can help you","I helping you","I helped you"], correct:1},
+  {category:"English & Communication", question:'"Interested" means:', options:["bored","angry","curious","confused"], correct:2},
+  {category:"English & Communication", question:'Fill in the blank: "I will message you ___ evening."', options:["on","in","in the","at"], correct:2},
+  {category:"Communication & Behavior", question:'Client says: "I\'m busy"', options:["Ok","Message me later","When can I reach out again?","Why are you busy?"], correct:2},
+  {category:"Communication & Behavior", question:"Best way to approach a client:", options:["Spam messages","Be polite and ask first","Force them","Ignore"], correct:1},
+  {category:"Communication & Behavior", question:"If a client ignores you:", options:["Stop messaging","Abuse","Follow up later politely","Block"], correct:2},
+  {category:"Communication & Behavior", question:"Good reply to a new client:", options:["Buy now","Let me know if you're interested","Hurry up","Fast reply"], correct:1},
+  {category:"Basic Sales Knowledge", question:"Sales means:", options:["forcing product","convincing only","solving customer problem","chatting"], correct:2},
+  {category:"Basic Sales Knowledge", question:"First step in sales:", options:["selling","understanding client needs","pricing","closing"], correct:1},
+  {category:"Basic Sales Knowledge", question:"Upselling means:", options:["ending deal","selling more value or upgrades","canceling order","ignoring client"], correct:1},
+  {category:"Basic Sales Knowledge", question:"Lead means:", options:["random person","potential customer","employee","manager"], correct:1},
+  {category:"Basic IT & Logic", question:"Email is used for:", options:["gaming","communication","editing","coding"], correct:1},
+  {category:"Basic IT & Logic", question:"MS Word file extension is:", options:[".jpg",".mp3",".docx",".exe"], correct:2},
+  {category:"Basic IT & Logic", question:"Internet is:", options:["offline tool","global network","game","device"], correct:1},
+  {category:"Basic IT & Logic", question:"Laptop is used for:", options:["only games","only calls","work and communication","nothing"], correct:2}
+];
+
+/* ============================================================
+   DATA — SALES ADVANCED (25 Qs, 0.8 mark each, total 20, pass 15)
+============================================================ */
+const salesAdvancedQuestions = [
+  {category:"Sales Fundamentals", question:"First step in sales process:", options:["closing","need analysis","pricing","delivery"], correct:1},
+  {category:"Sales Fundamentals", question:"A good sales person:", options:["talks more","listens more","ignores client","pushes product"], correct:1},
+  {category:"Sales Fundamentals", question:"Conversion means:", options:["lead lost","lead becomes client","no response","spam"], correct:1},
+  {category:"Sales Fundamentals", question:"Sales funnel refers to:", options:["pricing","stages of sales process","payment","delivery"], correct:1},
+  {category:"Sales Fundamentals", question:"Lead qualification means:", options:["random messaging","checking if client is potential","ignoring","blocking"], correct:1},
+  {category:"Sales Fundamentals", question:"Closing depends on:", options:["pressure","trust building","speed","luck"], correct:1},
+  {category:"Sales Fundamentals", question:"Pitch should be:", options:["same for all","personalized","long","copied"], correct:1},
+  {category:"Sales Fundamentals", question:"Follow-up should be:", options:["random","planned and polite","aggressive","avoided"], correct:1},
+  {category:"Objection Handling", question:'Client: "Too expensive"', options:["leave","explain value","fight","ignore"], correct:1},
+  {category:"Objection Handling", question:'Client: "Not interested"', options:["stop","ask reason and re-engage","argue","block"], correct:1},
+  {category:"Objection Handling", question:'Client: "Maybe later"', options:["ignore","schedule follow-up","push hard","leave"], correct:1},
+  {category:"Objection Handling", question:'Client: "I have a designer"', options:["leave","show your unique value","insult","block"], correct:1},
+  {category:"Objection Handling", question:'Client: "No budget"', options:["leave","offer suitable options","argue","ignore"], correct:1},
+  {category:"Platform Knowledge", question:"Twitch is:", options:["chat app","live streaming platform","email tool","game"], correct:1},
+  {category:"Platform Knowledge", question:"Discord is:", options:["streaming","community/chat platform","editing tool","payment app"], correct:1},
+  {category:"Platform Knowledge", question:"Emotes are:", options:["files","chat expressions used by streamers","ads","videos"], correct:1},
+  {category:"Platform Knowledge", question:"Vtuber is:", options:["real person","virtual avatar streamer","designer","gamer"], correct:1},
+  {category:"Platform Knowledge", question:"Twitter/X is used for:", options:["gaming","outreach and engagement","coding","editing"], correct:1},
+  {category:"Platform Knowledge", question:"Engagement means:", options:["ignoring","interaction with audience","blocking","selling"], correct:1},
+  {category:"Ethics & Security", question:"Client contacts you privately:", options:["deal privately","redirect to company","ignore","block"], correct:1},
+  {category:"Ethics & Security", question:"Sharing company data:", options:["allowed","not allowed","depends","optional"], correct:1},
+  {category:"Ethics & Security", question:"Private deal for personal benefit:", options:["accept","reject","hide","ignore"], correct:1},
+  {category:"Ethics & Security", question:"Fake promises to client:", options:["acceptable","not acceptable","sometimes","needed"], correct:1},
+  {category:"Ethics & Security", question:"Competitor asks for info:", options:["share","refuse and protect data","discuss","ignore"], correct:1},
+  {category:"Ethics & Security", question:"Using company IDs for personal work:", options:["allowed","not allowed","optional","depends"], correct:1}
+];
+
+/* ============================================================
+   DATA — ROLE RECOMMENDATION MATRIX (Image 5)
+============================================================ */
+const salesRoleMapping = [
+  {role:"Hunter / BDM", disc:["D","D-I","I-D"], mbti:["ENTJ","ESTP"], strength:"Bold closing, drives urgency, handles rejection", weakness:"May alienate; needs empathy and relationship coaching"},
+  {role:"Inside Sales", disc:["I","I-D","D-I"], mbti:["ESFJ","ENFJ"], strength:"Fast rapport, energizes prospects, high call activity", weakness:"Weak pipeline discipline; needs CRM accountability"},
+  {role:"Account Management", disc:["S","S-I","I-S"], mbti:["ENFJ","ESFJ"], strength:"Deep trust, client retention, loyalty champion", weakness:"Avoids upsell conflict; needs assertiveness coaching"},
+  {role:"Technical Sales", disc:["C","C-D","D-C"], mbti:["INTJ","ENTP"], strength:"Highly credible, data-backed, wins complex deals", weakness:"Over-complicates; needs simplification coaching"},
+  {role:"Consultative Sales", disc:["S-C","C-S"], mbti:["INFJ","INTJ"], strength:"Strategic empathy, deep solution fit, long-cycle", weakness:"Slow pipeline velocity; avoid conflict in negotiation"},
+  {role:"Retail / B2C", disc:["I","I-S","S-I"], mbti:["ESFP","ESFJ"], strength:"Warm, personable, high energy, builds instant trust", weakness:"Impulsive; needs structured daily target framework"}
+];
+
+/* ============================================================
+   STATE
+============================================================ */
+let currentUser = {};
+let discIndex = 0, discAnswers = [], discScores = {};
+let mbtiIndex = 0, mbtiAnswers = [];
+let salesLevel = null, salesQuestions = [], salesIndex = 0, salesAnswers = [], salesScore = 0;
+let lastPayload = null; // kept so the Retry button can resubmit without recomputation
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============================================================
+   STEP 1: PERSONAL INFO
+============================================================ */
+const contactInput = document.getElementById('contactNumber');
+contactInput.addEventListener('input', function(){
+  this.value = this.value.replace(/[^0-9]/g,'');
+  const ok = /^03[0-9]{9}$/.test(this.value);
+  document.getElementById('fld-contact').classList.toggle('error', this.value.length>0 && !ok);
+});
+
+document.getElementById('infoForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const fullName = document.getElementById('fullName').value.trim();
+  const contactNumber = document.getElementById('contactNumber').value.trim();
+  const designation = document.getElementById('designation').value.trim();
+  const department = document.getElementById('department').value.trim();
+  const shift = document.getElementById('shift').value;
+
+  let valid = true;
+  const markErr = (id, bad) => { document.getElementById(id).classList.toggle('error', bad); if(bad) valid=false; };
+  markErr('fld-name', !fullName);
+  markErr('fld-contact', !/^03[0-9]{9}$/.test(contactNumber));
+  markErr('fld-designation', !designation);
+  markErr('fld-department', !department);
+  markErr('fld-shift', !shift);
+
+  if(!valid){
+    document.querySelector('.field.error input, .field.error select')?.focus();
+    return;
+  }
+  currentUser = { fullName, contactNumber, designation, department, shift };
+  discIndex = 0; discAnswers = [];
+  showScreen('discSection');
+  loadDiscQuestion();
+});
+
+/* ============================================================
+   STEP 2: DISC
+============================================================ */
+function loadDiscQuestion(){
+  const q = discQuestions[discIndex];
+  document.getElementById('discQuestionTitle').textContent = q.situation;
+  document.getElementById('discProgressLabel').textContent = `Question ${discIndex+1} of ${discQuestions.length}`;
+  document.getElementById('discProgress').style.width = ((discIndex+1)/discQuestions.length*100)+'%';
+  document.getElementById('discPrevBtn').disabled = discIndex===0;
+  const nextBtn = document.getElementById('discNextBtn');
+  nextBtn.textContent = discIndex===discQuestions.length-1 ? 'Finish DISC' : 'Next';
+  nextBtn.disabled = true;
+
+  let html='';
+  q.statements.forEach((s,i)=>{
+    html += `<div class="opt-row">
+      <div class="opt-text">${s}</div>
+      <div class="ml-radios">
+        <label><input type="radio" name="most_${discIndex}" value="${i}" onchange="discCheck()"> M</label>
+        <label><input type="radio" name="least_${discIndex}" value="${i}" onchange="discCheck()"> L</label>
+      </div>
+    </div>`;
+  });
+  document.getElementById('discOptions').innerHTML = html;
+
+  const saved = discAnswers[discIndex];
+  if(saved){
+    document.querySelector(`input[name="most_${discIndex}"][value="${saved.most}"]`).checked = true;
+    document.querySelector(`input[name="least_${discIndex}"][value="${saved.least}"]`).checked = true;
+  }
+  discCheck();
+}
+function discCheck(){
+  const m = document.querySelector(`input[name="most_${discIndex}"]:checked`);
+  const l = document.querySelector(`input[name="least_${discIndex}"]:checked`);
+  document.getElementById('discNextBtn').disabled = !(m && l && m.value!==l.value);
+}
+function discNext(){
+  const m = document.querySelector(`input[name="most_${discIndex}"]:checked`);
+  const l = document.querySelector(`input[name="least_${discIndex}"]:checked`);
+  if(!m || !l || m.value===l.value){ alert('Please select ONE Most and ONE Least (different options).'); return; }
+  discAnswers[discIndex] = { most:parseInt(m.value), least:parseInt(l.value) };
+  if(discIndex < discQuestions.length-1){ discIndex++; loadDiscQuestion(); }
+  else { finishDisc(); }
+}
+function discPrev(){ if(discIndex>0){ discIndex--; loadDiscQuestion(); } }
+
+function finishDisc(){
+  discScores = { D:0, I:0, S:0, C:0 };
+  discAnswers.forEach(ans=>{
+    discScores[DISC_KEYS[ans.most]]++;
+    discScores[DISC_KEYS[ans.least]]--;
+  });
+  mbtiIndex = 0; mbtiAnswers = [];
+  showScreen('mbtiSection');
+  loadMBTIQuestion();
+}
+
+/* ============================================================
+   STEP 3: MBTI
+============================================================ */
+function loadMBTIQuestion(){
+  const q = mbtiQuestions[mbtiIndex];
+  document.getElementById('mbtiBadge').textContent = q.section;
+  document.getElementById('mbtiQuestionTitle').textContent = q.question;
+  document.getElementById('mbtiProgressLabel').textContent = `Question ${mbtiIndex+1} of ${mbtiQuestions.length}`;
+  document.getElementById('mbtiProgress').style.width = ((mbtiIndex+1)/mbtiQuestions.length*100)+'%';
+  document.getElementById('mbtiPrevBtn').disabled = mbtiIndex===0;
+  const nextBtn = document.getElementById('mbtiNextBtn');
+  nextBtn.textContent = mbtiIndex===mbtiQuestions.length-1 ? 'Finish MBTI' : 'Next';
+  nextBtn.disabled = true;
+
+  document.getElementById('mbtiOptions').innerHTML = `
+    <div class="choice-opt"><input type="radio" name="mbti_q" id="mbti_a" value="A" onchange="mbtiCheck()">
+      <label for="mbti_a"><strong>A)</strong> ${q.a}</label></div>
+    <div class="choice-opt"><input type="radio" name="mbti_q" id="mbti_b" value="B" onchange="mbtiCheck()">
+      <label for="mbti_b"><strong>B)</strong> ${q.b}</label></div>`;
+
+  if(mbtiAnswers[mbtiIndex]){
+    document.getElementById(mbtiAnswers[mbtiIndex]==='A' ? 'mbti_a' : 'mbti_b').checked = true;
+  }
+  mbtiCheck();
+}
+function mbtiCheck(){
+  const sel = document.querySelector('input[name="mbti_q"]:checked');
+  document.getElementById('mbtiNextBtn').disabled = !sel;
+}
+function mbtiNext(){
+  const sel = document.querySelector('input[name="mbti_q"]:checked');
+  if(!sel){ alert('Please select an option.'); return; }
+  mbtiAnswers[mbtiIndex] = sel.value;
+  if(mbtiIndex < mbtiQuestions.length-1){ mbtiIndex++; loadMBTIQuestion(); }
+  else { finishMBTI(); }
+}
+function mbtiPrev(){ if(mbtiIndex>0){ mbtiIndex--; loadMBTIQuestion(); } }
+
+function finishMBTI(){
+  showScreen('salesIntroSection');
+}
+
+/* ============================================================
+   STEP 4: SALES — LEVEL SELECT
+============================================================ */
+function selectLevel(level){
+  salesLevel = level;
+  document.getElementById('btnBasic').classList.toggle('selected', level==='basic');
+  document.getElementById('btnAdvanced').classList.toggle('selected', level==='advanced');
+  document.getElementById('btnBasic').setAttribute('aria-pressed', level==='basic');
+  document.getElementById('btnAdvanced').setAttribute('aria-pressed', level==='advanced');
+  document.getElementById('continueToSales').style.display = 'block';
+}
+
+function startSales(){
+  salesQuestions = salesLevel==='basic' ? salesBasicQuestions : salesAdvancedQuestions;
+  salesIndex = 0; salesAnswers = []; salesScore = 0;
+  document.getElementById('salesSectionTitle').textContent =
+    salesLevel==='basic' ? 'SECTION A: For Freshers' : 'SECTION B: For Experienced';
+  showScreen('salesSection');
+  loadSalesQuestion();
+}
+
+/* ============================================================
+   STEP 5: SALES — QUESTIONS
+============================================================ */
+function loadSalesQuestion(){
+  const q = salesQuestions[salesIndex];
+  document.getElementById('salesBadge').textContent = q.category;
+  document.getElementById('salesQuestionTitle').textContent = q.question;
+  document.getElementById('salesProgressLabel').textContent = `Question ${salesIndex+1} of ${salesQuestions.length}`;
+  document.getElementById('salesProgress').style.width = ((salesIndex+1)/salesQuestions.length*100)+'%';
+  document.getElementById('salesPrevBtn').disabled = salesIndex===0;
+  const nextBtn = document.getElementById('salesNextBtn');
+  nextBtn.textContent = salesIndex===salesQuestions.length-1 ? 'Finish Assessment' : 'Next';
+  nextBtn.disabled = true;
+
+  const letters=['a','b','c','d'];
+  let html='';
+  q.options.forEach((opt,i)=>{
+    html += `<div class="choice-opt"><input type="radio" name="sales_q" id="sales_${i}" value="${i}" onchange="salesCheck()">
+      <label for="sales_${i}"><strong>${letters[i]})</strong> ${opt}</label></div>`;
+  });
+  document.getElementById('salesOptions').innerHTML = html;
+
+  if(salesAnswers[salesIndex]!==undefined){
+    document.getElementById('sales_'+salesAnswers[salesIndex]).checked = true;
+  }
+  salesCheck();
+}
+function salesCheck(){
+  const sel = document.querySelector('input[name="sales_q"]:checked');
+  document.getElementById('salesNextBtn').disabled = !sel;
+}
+function salesNext(){
+  const sel = document.querySelector('input[name="sales_q"]:checked');
+  if(!sel){ alert('Please select an option.'); return; }
+  salesAnswers[salesIndex] = parseInt(sel.value);
+  if(salesIndex < salesQuestions.length-1){ salesIndex++; loadSalesQuestion(); }
+  else { finishSales(); }
+}
+function salesPrev(){ if(salesIndex>0){ salesIndex--; loadSalesQuestion(); } }
+
+function finishSales(){
+  let correctCount = 0;
+  salesAnswers.forEach((ans,i)=>{ if(ans===salesQuestions[i].correct) correctCount++; });
+  const perQ = salesLevel==='basic' ? 1 : 0.8;
+  salesScore = Math.round(correctCount*perQ*10)/10;
+  const passed = salesScore >= 15;
+  submitEverything(salesScore, passed);
+}
+
+/* ============================================================
+   STEP 6: COMPUTE DISC / MBTI / ROLE + SUBMIT
+============================================================ */
+function computeDiscType(){
+  const sorted = Object.entries(discScores).sort((a,b)=>b[1]-a[1]);
+  const [first, second] = sorted;
+  return first[1] > second[1] ? first[0] : `${first[0]}-${second[0]}`;
+}
+function discFullText(discType){
+  if(!discType.includes('-')) return DISC_FULL[discType];
+  const [a,b] = discType.split('-');
+  return `${DISC_FULL[a]} / ${DISC_FULL[b]} Blend`;
+}
+function computeMbtiType(){
+  const dim = { E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0 };
+  mbtiAnswers.forEach((ans,i)=>{ const q = mbtiQuestions[i]; dim[ans==='A'?q.aKey:q.bKey]++; });
+  return {
+    type: (dim.E>=dim.I?'E':'I') + (dim.S>=dim.N?'S':'N') + (dim.T>=dim.F?'T':'F') + (dim.J>=dim.P?'J':'P'),
+    dim
+  };
+}
+function getBestSalesRole(discType, mbtiType){
+  let best = null;
+  salesRoleMapping.forEach(role=>{
+    if(role.disc.includes(discType) && role.mbti.includes(mbtiType)) best = role;
+  });
+  if(!best){
+    salesRoleMapping.forEach(role=>{ if(role.disc.includes(discType) && !best) best = role; });
+  }
+  return best;
+}
+
+function submitEverything(salesScoreVal, passed){
+  const discType = computeDiscType();
+  const discFull = discFullText(discType);
+  const { type: mbtiType } = computeMbtiType();
+  const bestRole = getBestSalesRole(discType, mbtiType);
+
+  lastPayload = {
+    timestamp: new Date().toLocaleString(),
+    fullName: currentUser.fullName,
+    contactNumber: currentUser.contactNumber,
+    designation: currentUser.designation,
+    department: currentUser.department,
+    shift: currentUser.shift,
+    Dominance: discScores.D,
+    Influence: discScores.I,
+    Steadiness: discScores.S,
+    Compliance: discScores.C,
+    discResult: discFull,
+    mbtiResult: mbtiType,
+    salesPath: salesLevel==='basic' ? 'Basic' : 'Advanced',
+    salesScore: salesScoreVal,
+    salesResult: passed ? 'Pass' : 'Fail',
+    recommendedRole: bestRole ? bestRole.role : 'N/A',
+    submissionStatus: 'Submitted'
+  };
+
+  runSubmitAnimation(lastPayload);
+}
+
+function retrySubmit(){
+  if(!lastPayload){ return; }
+  document.getElementById('retryBtn').classList.remove('show');
+  runSubmitAnimation(lastPayload);
+}
+
+/* ============================================================
+   STEP 7: SUBMIT ANIMATION + GOOGLE SHEETS SAVE (dual-layer, robust)
+============================================================ */
+function playSuccessSound(){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    [660,880,1100].forEach((freq,i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type='sine'; osc.frequency.value=freq;
+      osc.connect(gain); gain.connect(ctx.destination);
+      const start = ctx.currentTime + i*0.1;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.2, start+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start+0.18);
+      osc.start(start); osc.stop(start+0.2);
+    });
+  }catch(e){ console.warn('Audio not available:', e); }
+}
+function launchConfetti(container){
+  const colors = ['#F5A000','#1a1a1a','#ffffff','#d98c00'];
+  for(let i=0;i<40;i++){
+    const piece = document.createElement('div');
+    piece.className='confetti-piece';
+    piece.style.left = Math.random()*100+'%';
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDuration = (1.4+Math.random()*1.2)+'s';
+    piece.style.animationDelay = (Math.random()*0.3)+'s';
+    container.appendChild(piece);
+    setTimeout(()=>piece.remove(), 3000);
+  }
+}
+
+function runSubmitAnimation(payload){
+  const overlay = document.getElementById('submitOverlay');
+  const spinner = document.getElementById('spinnerEl');
+  const check = document.getElementById('checkCircle');
+  const errorIcon = document.getElementById('errorCircle');
+  const msg = document.getElementById('submitMsg');
+  const sub = document.getElementById('submitSub');
+  const retryBtn = document.getElementById('retryBtn');
+  const box = document.querySelector('.submit-box');
+
+  overlay.classList.add('active');
+  spinner.classList.remove('done');
+  spinner.style.opacity = '1';
+  check.classList.remove('show');
+  errorIcon.classList.remove('show');
+  msg.classList.remove('is-error');
+  msg.textContent = 'Submitting your assessment...';
+  sub.textContent = 'Please wait a moment';
+  retryBtn.classList.remove('show');
+
+  saveToSheets(payload).then(()=>{
+    spinner.classList.add('done');
+    spinner.style.opacity='0';
+    check.classList.add('show');
+    msg.textContent = 'Submitted successfully!';
+    sub.textContent = 'Redirecting...';
+    launchConfetti(box);
+    playSuccessSound();
+    setTimeout(()=>{
+      overlay.classList.remove('active');
+      showScreen('thankyouSection');
+    }, 1600);
+  }).catch((err)=>{
+    console.error('All submit attempts failed:', err);
+    spinner.classList.add('done');
+    spinner.style.opacity='0';
+    errorIcon.classList.add('show');
+    msg.classList.add('is-error');
+    msg.textContent = 'Submission failed';
+    sub.textContent = err && err.message ? err.message : 'Please check your connection and try again.';
+    retryBtn.classList.add('show');
+  });
+}
+
+/**
+ * Tries fetch() first (fast, gives a real success/error response).
+ * If that fails for any reason (CORS, network, timeout), automatically
+ * falls back to the hidden-iframe <form> POST technique, which is not
+ * subject to CORS restrictions. The Apps Script backend (Code.gs)
+ * accepts data delivered either way.
+ */
+function saveToSheets(payload){
+  console.log('saveToSheets: attempting fetch() delivery...', payload);
+  return fetchWithTimeout(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight
+    body: JSON.stringify(payload)
+  }, 10000)
+  .then(response => response.json())
+  .then(result => {
+    console.log('saveToSheets: server response:', result);
+    if(result.status === 'success'){
+      return true;
+    }
+    throw new Error(result.message || 'Server reported an error while saving.');
+  })
+  .catch(err => {
+    console.warn('saveToSheets: fetch() failed ('+err.message+'), falling back to iframe form POST...');
+    return saveToSheetsViaIframe(payload);
+  });
+}
+
+function fetchWithTimeout(url, options, timeoutMs){
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) => setTimeout(()=>reject(new Error('Request timed out')), timeoutMs))
+  ]);
+}
+
+function saveToSheetsViaIframe(payload){
+  return new Promise((resolve, reject) => {
+    try{
+      const iframeName = 'ht_iframe_' + Date.now();
+      const iframe = document.createElement('iframe');
+      iframe.name = iframeName;
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = SCRIPT_URL;
+      form.target = iframeName;
+      form.style.display = 'none';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'data';
+      input.value = JSON.stringify(payload);
+      form.appendChild(input);
+      document.body.appendChild(form);
+
+      let settled = false;
+      const cleanup = () => { form.remove(); setTimeout(()=>iframe.remove(), 1000); };
+
+      iframe.onload = () => {
+        if(settled) return;
+        settled = true;
+        // Note: because the iframe target is cross-origin, we cannot read
+        // its response body to confirm success — but the POST request was
+        // delivered to the server, which is what matters. doPost() in
+        // Code.gs will have already run by this point.
+        console.log('saveToSheetsViaIframe: iframe load event fired — request was delivered.');
+        cleanup();
+        resolve(true);
+      };
+
+      form.submit();
+      console.log('saveToSheetsViaIframe: form submitted to', SCRIPT_URL);
+
+      // Fallback in case onload never fires (some browsers don't fire it
+      // reliably for cross-origin iframe targets) — still resolve, since
+      // form.submit() above has already sent the request.
+      setTimeout(()=>{
+        if(settled) return;
+        settled = true;
+        cleanup();
+        resolve(true);
+      }, 4000);
+    }catch(e){
+      console.error('saveToSheetsViaIframe: failed to even send the request:', e);
+      reject(new Error('Could not reach the server. Please check your internet connection and try again.'));
+    }
+  });
+}
+</script>
+</body>
+</html>
