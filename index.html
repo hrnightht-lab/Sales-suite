@@ -47,8 +47,20 @@ body{
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
 /* ===== PAGE 1: PERSONAL INFO ===== */
-.info-top{padding:26px 24px 70px;text-align:center;position:relative;}
-.info-top img.logo{width:170px;max-width:60%;}
+.info-top{
+  padding:20px 24px 120px;
+  text-align:center;
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+.info-top img.logo{
+  width:180px;
+  max-width:65%;
+  display:block;
+  margin:0 auto;
+}
 .info-top img.character{
   position:absolute;bottom:-2px;left:50%;transform:translateX(-58%);
   width:190px;max-width:62%;z-index:5;pointer-events:none;
@@ -82,8 +94,10 @@ body{
 
 /* ===== SUITE HEADER ===== */
 .suite-header{
-  background:linear-gradient(135deg,var(--orange),#1a1a1a);
-  color:#fff;padding:26px 20px 18px;text-align:center;
+  background:var(--orange);
+  color:#fff;
+  padding:26px 20px 18px;
+  text-align:center;
 }
 .suite-header h1{font-size:1.7em;font-weight:800;margin-bottom:4px;}
 .suite-header p{font-size:.85em;opacity:.92;letter-spacing:1px;text-transform:uppercase;}
