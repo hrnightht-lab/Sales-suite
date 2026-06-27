@@ -858,9 +858,19 @@ function finishSales(){
    STEP 6: COMPUTE DISC / MBTI / ROLE + SUBMIT
 ============================================================ */
 function computeDiscType(){
-  const sorted = Object.entries(discScores).sort((a,b)=>b[1]-a[1]);
-  const [first, second] = sorted;
-  return first[1] > second[1] ? first[0] : `${first[0]}-${second[0]}`;
+  const highest = Math.max(...Object.values(discScores));
+
+  const topStyles = Object.entries(discScores)
+    .filter(([, v]) => v === highest)
+    .map(([k]) => k);
+
+  if (topStyles.length === 1){
+    return topStyles[0];
+  }else if(topStyles.length > 1){
+    return topStyles.sort().join("-");
+  }
+
+  return "Unknown";
 }
 function discFullText(discType){
   if(!discType.includes('-')) return DISC_FULL[discType];
@@ -875,15 +885,33 @@ function computeMbtiType(){
     dim
   };
 }
+function normalizeDisc(discType){
+  return discType
+    .replace(/\s/g,"")
+    .replace("/", "-")
+    .toUpperCase();
+}
 function getBestSalesRole(discType, mbtiType){
-  let best = null;
-  salesRoleMapping.forEach(role=>{
-    if(role.disc.includes(discType) && role.mbti.includes(mbtiType)) best = role;
+  const userDisc = normalizeDisc(discType);
+
+  let bestMatch = null;
+
+  salesRoleMapping.forEach(role => {
+
+    const roleDiscList = role.disc.map(d =>
+      d.replace(/\s/g,"").toUpperCase()
+    );
+
+    const discMatch = roleDiscList.includes(userDisc);
+    const mbtiMatch = role.mbti.includes(mbtiType);
+
+    if(discMatch && mbtiMatch){
+      bestMatch = role;
+    }
+
   });
-  if(!best){
-    salesRoleMapping.forEach(role=>{ if(role.disc.includes(discType) && !best) best = role; });
-  }
-  return best;
+
+  return bestMatch;
 }
 
 function submitEverything(salesScoreVal, passed){
