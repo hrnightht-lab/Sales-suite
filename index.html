@@ -418,7 +418,7 @@ body{
     <div class="suite-content">
       <div class="instructions">
         <h3 id="salesSectionTitle">Sales Assessment</h3>
-        <ul><li>Har question mein best option choose karein</li></ul>
+        <ul><li>Please choose the best option for each question</li></ul>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="salesProgress"></div></div>
       <div class="progress-label" id="salesProgressLabel">Question 1</div>
@@ -800,7 +800,7 @@ function startSales(){
   salesQuestions = salesLevel==='basic' ? salesBasicQuestions : salesAdvancedQuestions;
   salesIndex = 0; salesAnswers = []; salesScore = 0;
   document.getElementById('salesSectionTitle').textContent =
-    salesLevel==='basic' ? 'SECTION A: For Freshers' : 'SECTION B: For Experienced';
+    salesLevel==='basic' ? 'For Freshers Candidates' : 'For Experienced Candidates';
   showScreen('salesSection');
   loadSalesQuestion();
 }
