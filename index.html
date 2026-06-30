@@ -400,8 +400,8 @@ body{
       <div class="level-title">Choose Your Assessment Level</div>
       <div class="level-sub">Select the level that best matches your experience.</div>
       <div class="level-card">
-        <button type="button" class="level-btn" id="btnBasic" onclick="selectLevel('basic')" aria-pressed="false">Sales Basic</button>
-        <button type="button" class="level-btn" id="btnAdvanced" onclick="selectLevel('advanced')" aria-pressed="false">Sales Advanced</button>
+        <button type="button" class="level-btn" id="btnBasic" onclick="selectLevel('basic')" aria-pressed="false">Fresher</button>
+        <button type="button" class="level-btn" id="btnAdvanced" onclick="selectLevel('advanced')" aria-pressed="false">Experienced</button>
       </div>
       <div class="level-note">Note: Only one option can be selected.</div>
       <button class="btn btn-primary" id="continueToSales" onclick="startSales()">Continue</button>
@@ -933,7 +933,7 @@ function submitEverything(salesScoreVal, passed){
     Compliance: discScores.C,
     discResult: discFull,
     mbtiResult: mbtiType,
-    salesPath: salesLevel==='Fresher' ? 'Fresher' : 'Experienced',
+    salesPath: salesLevel==='basic' ? 'Fresher' : 'Experienced',
     salesScore: salesScoreVal,
     salesResult: passed ? 'Pass' : 'Fail',
     recommendedRole: bestRole ? bestRole.role : 'N/A',
